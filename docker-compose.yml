@@ -1,0 +1,14 @@
+services:
+  judgehost:
+    build: .
+    hostname: ${hostname}
+    restart: always
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    environment:
+      - CONTAINER_TIMEZONE='Asia/Bangkok'
+      - DOMSERVER_BASEURL=${domserver_url}
+      - JUDGEDAEMON_USERNAME=${username}
+      - JUDGEDAEMON_PASSWORD=${password}
+      - DAEMON_ID=0
