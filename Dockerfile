@@ -1,10 +1,11 @@
 FROM domjudge/judgehost:8.3.1
 
-RUN apt-get update && apt-get install -y wget unzip openjdk-17-jdk \
-  && rm -rf /var/lib/apt/lists/*
+LABEL modified_by="Borworntat Dendumrongkul"
+LABEL github="github.com/MasterIceZ/domjudge-judgehost"
 
-RUN wget https://github.com/JetBrains/kotlin/releases/download/v2.2.20/kotlin-compiler-2.2.20.zip \
-  && unzip kotlin-compiler-2.2.20.zip -d /usr/local/ \
-  && rm kotlin-compiler-2.2.20.zip \
-  && ln -s /usr/local/kotlinc/bin/kotlinc /usr/bin/kotlinc \
-  && ln -s /usr/local/kotlinc/bin/kotlin /usr/bin/kotlin
+ENV CHROOT_DIR /opt/domjudge/judgehost/chroot
+
+COPY install_kotlin.sh ${CHROOT_DIR}/tmp/install_kotlin.sh
+
+RUN chmod +x ${CHROOT_DIR}/tmp/install_kotlin.sh
+RUN /opt/domjudge/judgehost/bin/dj_run_chroot /tmp/install_kotlin.sh ${KOTLIN_VERSION}
